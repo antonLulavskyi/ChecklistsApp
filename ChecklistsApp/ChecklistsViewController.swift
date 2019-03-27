@@ -11,6 +11,16 @@ import UIKit
 class ChecklistsViewController: UITableViewController {
 
     var items: [ChecklistItem]
+   
+    required init?(coder aDecoder: NSCoder) {
+        items = [ChecklistItem]()
+        super.init(coder: aDecoder)
+        createItem(text: "Walk the pig", checked: false)
+        createItem(text: "Learn how to walk", checked: false)
+        createItem(text: "Brush my dad's teeth", checked: true)
+        createItem(text: "Do some stuff", checked: false)
+        createItem(text: "Utach baby", checked: true)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,36 +28,24 @@ class ChecklistsViewController: UITableViewController {
         // Do any additional setup after loading the view, typically from a nib.
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        items = [ChecklistItem]()
+    //MARK: - Add Item Action
+    @IBAction func addItem(_ sender: UIBarButtonItem) {
+        let newRowIndex = items.count
+        createItem(text: "I'm a new row", checked: false)
         
-        let row0item = ChecklistItem()
-        row0item.text = "Walk the pig"
-        row0item.checked = false
-        items.append(row0item)
-        
-        let row1item = ChecklistItem()
-        row1item.text = "Learn how to walk"
-        row1item.checked = false
-        items.append(row1item)
-        
-        let row2item = ChecklistItem()
-        row2item.text = "Brush my dad's teeth"
-        row2item.checked = true
-        items.append(row2item)
-        
-        let row3item = ChecklistItem()
-        row3item.text = "Do some stuff"
-        row3item.checked = false
-        items.append(row3item)
-        
-        let row4item = ChecklistItem()
-        row4item.text = "O, are you serious ?"
-        row4item.checked = true
-        items.append(row4item)
-    
-        super.init(coder: aDecoder)
+        let indexPath = IndexPath(row: newRowIndex, section: 0)
+        let indexPaths = [indexPath]
+        tableView.insertRows(at: indexPaths, with: .automatic)
     }
+    
+    func createItem(text: String, checked: Bool) {
+        let newItem = ChecklistItem()
+        newItem.text = text
+        newItem.checked = checked
+        items.append(newItem)
+    }
+    
+    
     // Using tags is a handy trick to get a reference to a UI element without having to make an @IBOutlet variable for it.
     func configureText(for cell: UITableViewCell, with item: ChecklistItem) {
         let label = cell.viewWithTag(1000) as! UILabel
