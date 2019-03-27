@@ -30,7 +30,7 @@ class ChecklistsViewController: UITableViewController {
     
     //MARK: - Add Item Action
 //    @IBAction func addItem(_ sender: UIBarButtonItem) {
-//        //Calculate the new index for the new row. Since I have 4 object and it's index starts from 0, I have [0,1,2,3] but count method returns to me Int 4, it is perfect number for my nex index.
+//        //Calculate the new index for the new row. Since I have 4 object and it's index starts from 0, I have [0,1,2,3] but count property returns to me Int 4, it is perfect number for my nex index.
 //        let newRowIndex = items.count
 //        createItem(text: "I'm a new row", checked: false)
 //        
