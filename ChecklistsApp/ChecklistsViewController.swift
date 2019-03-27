@@ -30,6 +30,7 @@ class ChecklistsViewController: UITableViewController {
     
     //MARK: - Add Item Action
     @IBAction func addItem(_ sender: UIBarButtonItem) {
+        //Calculate the new index for the new row. Since I have 4 object and it's index starts from 0, I have [0,1,2,3] but count method returns to me Int 4, it is perfect number for my nex index.
         let newRowIndex = items.count
         createItem(text: "I'm a new row", checked: false)
         
@@ -84,6 +85,15 @@ class ChecklistsViewController: UITableViewController {
             configureCheckmark(for: cell, with: item)
         }
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        // remove the item from the data model
+        items.remove(at: indexPath.row)
+        
+        // delete the corresponding row from the tableview
+        let indexPaths = [indexPath]
+        tableView.deleteRows(at: indexPaths, with: .automatic)
     }
     
 }
