@@ -10,31 +10,82 @@ import UIKit
 
 class ChecklistsViewController: UITableViewController {
 
+    var items: [ChecklistItem]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("ViewDidLoad was loaded")
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        items = [ChecklistItem]()
+        
+        let row0item = ChecklistItem()
+        row0item.text = "Walk the pig"
+        row0item.checked = false
+        items.append(row0item)
+        
+        let row1item = ChecklistItem()
+        row1item.text = "Learn how to walk"
+        row1item.checked = false
+        items.append(row1item)
+        
+        let row2item = ChecklistItem()
+        row2item.text = "Brush my dad's teeth"
+        row2item.checked = true
+        items.append(row2item)
+        
+        let row3item = ChecklistItem()
+        row3item.text = "Do some stuff"
+        row3item.checked = false
+        items.append(row3item)
+        
+        let row4item = ChecklistItem()
+        row4item.text = "O, are you serious ?"
+        row4item.checked = true
+        items.append(row4item)
+    
+        super.init(coder: aDecoder)
+    }
+    // Using tags is a handy trick to get a reference to a UI element without having to make an @IBOutlet variable for it.
+    func configureText(for cell: UITableViewCell, with item: ChecklistItem) {
+        let label = cell.viewWithTag(1000) as! UILabel
+        label.text = item.text
+    }
+    
+    func configureCheckmark(for cell: UITableViewCell, with item: ChecklistItem) {
+        if item.checked {
+            cell.accessoryType = .checkmark
+        } else {
+            cell.accessoryType = .none
+        }
     }
 
     //MARK: - Data Source Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return items.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let label = cell.viewWithTag(1000) as! UILabel
-        
-        if indexPath.row == 0 {
-            label.text = "Walk the mom"
-        } else if indexPath.row == 1 {
-            label.text = "Play the game"
-        } else if indexPath.row == 2 {
-            label.text = "Go home"
-        } else if indexPath.row == 3 {
-            label.text = "Go sleep"
-        }
-        
+        let item = items[indexPath.row]
+        configureText(for: cell, with: item)
+        configureCheckmark(for: cell, with: item)
         return cell
+    }
+    
+    //MARK: - Delegate Methods
+    
+    // This method does nselect rows
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if let cell = tableView.cellForRow(at: indexPath) {
+            let item = items[indexPath.row]
+            item.toggleChecked()
+            configureCheckmark(for: cell, with: item)
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
 }
