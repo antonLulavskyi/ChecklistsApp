@@ -28,16 +28,12 @@ class ChecklistsViewController: UITableViewController {
         // Do any additional setup after loading the view, typically from a nib.
     }
     
-    //MARK: - Add Item Action
-//    @IBAction func addItem(_ sender: UIBarButtonItem) {
-//        //Calculate the new index for the new row. Since I have 4 object and it's index starts from 0, I have [0,1,2,3] but count property returns to me Int 4, it is perfect number for my nex index.
-//        let newRowIndex = items.count
-//        createItem(text: "I'm a new row", checked: false)
-//        
-//        let indexPath = IndexPath(row: newRowIndex, section: 0)
-//        let indexPaths = [indexPath]
-//        tableView.insertRows(at: indexPaths, with: .automatic)
-//    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "AddItem" {
+            let controller = segue.destination as! AddItemViewController
+            controller.delegate = self
+        }
+    }
     
     func createItem(text: String, checked: Bool) {
         let newItem = ChecklistItem()
@@ -98,3 +94,14 @@ class ChecklistsViewController: UITableViewController {
     
 }
 
+extension ChecklistsViewController: AddItemViewControllerDelegate {
+    func addItemViewControllerDidCancel(_ controller: AddItemViewController) {
+        dismiss(animated: true)
+    }
+    
+    func addItemViewController(_ controller: AddItemViewController, didFinishAdding item: ChecklistItem) {
+        dismiss(animated: true)
+    }
+    
+    
+}
